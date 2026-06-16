@@ -3,6 +3,7 @@ import Nav from './components/Nav';
 import ScrollProgress from './components/ScrollProgress';
 import GrainOverlay from './components/GrainOverlay';
 import Hero from './components/sections/Hero';
+import About from './components/sections/About';
 
 export default function App() {
   // Boot Lenis inertia smooth-scroll (auto-disabled for reduced motion).
@@ -17,8 +18,9 @@ export default function App() {
 
       <main>
         <Hero />
+        <About />
         {/* Sections are added section-by-section:
-            About · Education · Skills · Work · Contact */}
+            Education · Skills · Work · Contact */}
       </main>
     </>
   );
