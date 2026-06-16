@@ -5,6 +5,7 @@ import GrainOverlay from './components/GrainOverlay';
 import Hero from './components/sections/Hero';
 import About from './components/sections/About';
 import Education from './components/sections/Education';
+import Skills from './components/sections/Skills';
 
 export default function App() {
   // Boot Lenis inertia smooth-scroll (auto-disabled for reduced motion).
@@ -21,8 +22,9 @@ export default function App() {
         <Hero />
         <About />
         <Education />
+        <Skills />
         {/* Sections are added section-by-section:
-            Skills · Work · Contact */}
+            Work · Contact */}
       </main>
     </>
   );
