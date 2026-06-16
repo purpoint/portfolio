@@ -7,6 +7,7 @@ import About from './components/sections/About';
 import Education from './components/sections/Education';
 import Skills from './components/sections/Skills';
 import Work from './components/sections/Work';
+import Contact from './components/sections/Contact';
 
 export default function App() {
   // Boot Lenis inertia smooth-scroll (auto-disabled for reduced motion).
@@ -25,8 +26,7 @@ export default function App() {
         <Education />
         <Skills />
         <Work />
-        {/* Sections are added section-by-section:
-            Contact */}
+        <Contact />
       </main>
     </>
   );
