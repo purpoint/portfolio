@@ -11,7 +11,7 @@ export const links = {
   email: 'manan.xf.12@gmail.com',
   phone: '+91 93927 02794',
   github: 'https://github.com/purpoint',
-  linkedin: '', // e.g. 'https://www.linkedin.com/in/your-handle'
+  linkedin: 'https://linkedin.com/in/manan-ghodasara-a85492359',
 };
 
 export const hero = {
@@ -28,8 +28,8 @@ export const about = {
   eyebrow: '01 — ABOUT',
   // Each string is a "line" whose words light up as it scrolls through centre.
   statement:
-    "I'm a computer-science undergrad who has independently architected and shipped three production full-stack apps — a real-time collaborative system, an AI-powered SaaS, and a vector-search RAG engine. Each is live, open-source, and hardened with production-grade auth, rate limiting, and 99.9% uptime. I care about the unglamorous parts done right: latency budgets, failure modes, and type-safe data layers.",
-  facts: ['BASED IN BENGALURU', "B.E. CS '27", '3 SHIPPED APPS', 'OPEN TO ROLES'],
+    "I'm a computer-science undergrad who has independently architected and shipped four production full-stack apps — a real-time collaborative system, an AI-powered SaaS, a vector-search RAG engine, and a voice-first accessibility assistant. Each is live, open-source, and hardened with production-grade auth, rate limiting, and 99.9% uptime. I care about the unglamorous parts done right: latency budgets, failure modes, and type-safe data layers.",
+  facts: ['BASED IN BENGALURU', "B.E. CS '27", '4 SHIPPED APPS', 'OPEN TO ROLES'],
 };
 
 export const education = {
@@ -119,7 +119,7 @@ export const work = {
         { value: '60–80%', label: 'LESS BANDWIDTH' },
         { value: '6', label: 'TOOLS' },
       ],
-      live: '',
+      live: 'https://collab-board-xi.vercel.app',
       code: 'https://github.com/purpoint/Collab-Board',
     },
     {
@@ -141,7 +141,7 @@ export const work = {
         { value: '99.9%', label: 'UPTIME' },
         { value: '6-CLASS', label: 'MODEL' },
       ],
-      live: '',
+      live: 'https://waste-iq-plum.vercel.app',
       code: 'https://github.com/purpoint/Waste-IQ',
     },
     {
@@ -163,8 +163,30 @@ export const work = {
         { value: '384-DIM', label: 'VECTORS' },
         { value: 'TOP-5', label: 'RETRIEVAL' },
       ],
-      live: '',
+      live: 'https://mindvault-pink.vercel.app',
       code: 'https://github.com/purpoint/mindvault',
+    },
+    {
+      id: 'echovision',
+      index: '04',
+      name: 'EchoVision AI',
+      tagline: 'Voice-first accessibility assistant',
+      glow: '200, 52, 27',
+      image: '/projects/echovision.png',
+      stack: ['React', 'Python', 'FastAPI', 'OpenCV', 'Gemini', 'Groq', 'Tesseract.js', 'PDF.js', 'Web Speech'],
+      bullets: [
+        'Voice-first assistant that narrates the world for low-vision users — a local OpenCV computer-vision service interprets scenes and objects, paired with spoken output.',
+        'Resilient multi-model LLM integration with automatic provider fallback (Gemini primary → Groq fallback) and context-restricted prompting — grounded, available answers even when a provider fails.',
+        'Reusable multimodal extraction stack — PDF.js for documents + Tesseract.js OCR for scanned images — powering both retrieval and spoken accessibility narration.',
+        'Python (FastAPI) vision backend alongside the Node services; end-to-end TypeScript on the client, JWT-secured APIs with rate limiting, deployed on Vercel + Render.',
+      ],
+      stats: [
+        { value: '2×', label: 'LLM FALLBACK' },
+        { value: 'VOICE', label: 'FIRST UX' },
+        { value: 'OCR + CV', label: 'MULTIMODAL' },
+      ],
+      live: '',
+      code: 'https://github.com/purpoint/EchovisionAI',
     },
   ] as Project[],
 };
