@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================= *
+ *  MOLTEN EDITORIAL — global base                               *
+ * ============================================================= */
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    /* Lenis drives scroll; keep native smooth off to avoid double-easing. */
+    scroll-behavior: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-bg-bottom font-body text-ink antialiased;
+    /* Deep warm charcoal gradient — never pure black. */
+    background:
+      radial-gradient(1200px 800px at 70% -10%, rgba(255, 138, 60, 0.08), transparent 60%),
+      linear-gradient(180deg, #1a1310 0%, #0e0a08 60%, #0b0705 100%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+
+  /* Lenis smooth-scroll wiring */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  ::selection {
+    background: rgba(255, 91, 46, 0.35);
+    color: #fff;
+  }
+
+  /* Visible, on-brand focus ring for keyboard users. */
+  :focus-visible {
+    outline: 2px solid var(--molten-amber, #ff8a3c);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* Mono eyebrow / label / cue type. */
+  .mono {
+    @apply font-mono uppercase tracking-eyebrow text-ink-muted;
+    font-size: clamp(10px, 0.78vw, 13px);
+  }
+
+  /* Section number + label eyebrow, e.g. "01 — ABOUT". */
+  .eyebrow {
+    @apply mono flex items-center gap-3 text-molten-amber/90;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply inline-block h-px w-8 bg-molten-amber/50;
+  }
+
+  /* Warm molten gradient clipped through text. */
+  .text-molten {
+    @apply bg-molten-text bg-clip-text text-transparent;
+  }
+
+  /* Hairline divider. */
+  .hairline {
+    @apply border-t;
+    border-color: rgba(255, 235, 220, 0.1);
+  }
+
+  /* Mono skill / coursework chip. */
+  .chip {
+    @apply mono inline-flex items-center rounded-full border px-4 py-2 text-ink/80 transition-all duration-300;
+    border-color: rgba(255, 235, 220, 0.12);
+    background: rgba(255, 235, 220, 0.02);
+  }
+  .chip:hover {
+    color: #fff;
+    border-color: rgba(255, 138, 60, 0.55);
+    box-shadow: 0 0 26px -8px rgba(255, 138, 60, 0.6);
+    transform: translateY(-2px);
+  }
+
+  /* Molten pill button. */
+  .btn-molten {
+    @apply font-mono uppercase tracking-[0.18em] inline-flex items-center gap-2 rounded-full px-7 py-4 text-sm font-medium text-[#1a0d06] transition-transform duration-300;
+    background-image: linear-gradient(120deg, #ffd9a8, #ff8a3c 45%, #ff5b2e);
+    box-shadow: 0 10px 40px -10px rgba(255, 91, 46, 0.7);
+  }
+  .btn-molten:hover {
+    transform: translateY(-3px) scale(1.02);
+  }
+
+  /* Ghost / outline button. */
+  .btn-ghost {
+    @apply font-mono uppercase tracking-[0.18em] inline-flex items-center gap-2 rounded-full border px-7 py-4 text-sm text-ink/90 transition-all duration-300;
+    border-color: rgba(255, 235, 220, 0.2);
+  }
+  .btn-ghost:hover {
+    border-color: rgba(255, 138, 60, 0.6);
+    color: #fff;
+    transform: translateY(-3px);
+  }
+
+  /* Standard section vertical rhythm + max width. */
+  .section-pad {
+    @apply px-6 py-28 sm:px-10 md:py-36 lg:px-16;
+  }
+  .container-rail {
+    @apply mx-auto w-full max-w-[1400px];
+  }
+}
+
+/* Film grain overlay — animated via Tailwind keyframes when allowed. */
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Soft warm vignette framing the whole page. */
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 55;
+  box-shadow: inset 0 0 240px 60px rgba(11, 7, 5, 0.9);
+}
+
+/* ============================================================= *
+ *  prefers-reduced-motion — kill all motion, keep static layout *
+ * ============================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain {
+    animation: none !important;
+  }
+}
