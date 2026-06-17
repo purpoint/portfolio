@@ -33,8 +33,19 @@ export function useLenis() {
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
+    // Lazy 3D canvases + web fonts can shift layout after the first paint, which
+    // leaves ScrollTrigger start/end positions stale. Recompute them once the
+    // page has fully loaded, plus a couple of delayed passes to be safe.
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener('load', refresh);
+    const t1 = window.setTimeout(refresh, 800);
+    const t2 = window.setTimeout(refresh, 2000);
+
     return () => {
       gsap.ticker.remove(raf);
+      window.removeEventListener('load', refresh);
+      clearTimeout(t1);
+      clearTimeout(t2);
       lenis.destroy();
     };
   }, [reduced]);

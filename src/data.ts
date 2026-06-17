@@ -16,20 +16,31 @@ export const links = {
 
 export const hero = {
   navName: 'MANAN',
-  kicker: 'FULL-STACK & AI ENGINEER — BENGALURU, INDIA',
-  // Rendered word-by-word at poster scale.
+  role: 'FULL-STACK · MERN · BACKEND ENGINEER',
+  location: 'BENGALURU, INDIA',
   name: ['MANAN', 'GHODASARA'],
   sub: 'I build real-time systems, AI-powered SaaS, and things that actually ship.',
-  hint: '↳ TRY HOVERING',
   cue: 'SCROLL TO CONTINUE ↓',
 };
 
 export const about = {
   eyebrow: '01 — ABOUT',
-  // Each string is a "line" whose words light up as it scrolls through centre.
-  statement:
-    "I'm a computer-science undergrad who has independently architected and shipped four production full-stack apps — a real-time collaborative system, an AI-powered SaaS, a vector-search RAG engine, and a voice-first accessibility assistant. Each is live, open-source, and hardened with production-grade auth, rate limiting, and 99.9% uptime. I care about the unglamorous parts done right: latency budgets, failure modes, and type-safe data layers.",
-  facts: ['BASED IN BENGALURU', "B.E. CS '27", '4 SHIPPED APPS', 'OPEN TO ROLES'],
+  // Bold lead line, then quieter supporting copy. `highlights` are accented.
+  lead:
+    "I'm a CS undergrad who has independently architected and shipped multiple production full-stack apps — real-time collaboration, an AI SaaS, a vector-search RAG engine, and a voice-first accessibility assistant.",
+  body:
+    'Each one is live, open-source, and hardened with production-grade auth, rate limiting, and 99.9% uptime. I care about the unglamorous parts done right — latency budgets, failure modes, and type-safe data layers.',
+  highlights: [
+    'multiple production full-stack apps',
+    '99.9% uptime',
+    'type-safe data layers',
+  ],
+  facts: [
+    { label: 'Based in', value: 'Bengaluru, India' },
+    { label: 'Education', value: "B.E. CS · '27" },
+    { label: 'Shipped', value: 'Multiple production apps' },
+    { label: 'Status', value: 'Open to roles' },
+  ],
 };
 
 export const education = {
@@ -47,6 +58,8 @@ export const education = {
     'Operating Systems',
     'Computer Networks',
     'DBMS',
+    'System Design',
+    'SQL',
   ],
 };
 
@@ -97,8 +110,8 @@ export interface Project {
 }
 
 export const work = {
-  eyebrow: '04 — SELECTED WORK',
-  heading: 'SELECTED WORK',
+  eyebrow: '04 — PROJECTS',
+  heading: 'PROJECTS',
   projects: [
     {
       id: 'collabboard',
@@ -202,6 +215,6 @@ export const contact = {
 export const nav = [
   { label: 'ABOUT', href: '#about' },
   { label: 'SKILLS', href: '#skills' },
-  { label: 'WORK', href: '#work' },
+  { label: 'PROJECTS', href: '#projects' },
   { label: 'CONTACT', href: '#contact' },
 ];

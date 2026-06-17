@@ -1,42 +1,34 @@
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import MoltenObject from './MoltenObject';
+import Scene from './Scene';
 
 /**
- * Lazy-mounted WebGL stage for the molten object.
- *
- * Performance guards:
- *  - devicePixelRatio capped at 2 (`dpr={[1, 2]}`)
- *  - render loop pauses (`frameloop="never"`) whenever the hero scrolls
- *    offscreen, via an IntersectionObserver on the wrapper
- *  - the whole module is code-split and loaded with React.lazy from the Hero
+ * Full-bleed WebGL stage for the immersive hero. Caps DPR at 2 and pauses the
+ * render loop whenever it scrolls offscreen (IntersectionObserver), so the
+ * heavy transmission + post-processing only runs while visible.
  */
 export default function HeroCanvas() {
-  const wrapRef = useRef<HTMLDivElement>(null);
+  const wrap = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(true);
 
   useEffect(() => {
-    const el = wrapRef.current;
+    const el = wrap.current;
     if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => setActive(entry.isIntersecting),
-      { threshold: 0.05 }
-    );
+    const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting), { threshold: 0.02 });
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
   return (
-    <div ref={wrapRef} className="absolute inset-0 h-full w-full">
+    <div ref={wrap} className="absolute inset-0 h-full w-full">
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 42 }}
+        camera={{ position: [0, 0, 6], fov: 35 }}
         dpr={[1, 2]}
         frameloop={active ? 'always' : 'never'}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-        style={{ pointerEvents: 'none' }}
+        gl={{ antialias: true, powerPreference: 'high-performance' }}
       >
         <Suspense fallback={null}>
-          <MoltenObject />
+          <Scene />
         </Suspense>
       </Canvas>
     </div>

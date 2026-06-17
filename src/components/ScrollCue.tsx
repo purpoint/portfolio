@@ -7,7 +7,7 @@ interface ScrollCueProps {
 export default function ScrollCue({ label = 'SCROLL TO CONTINUE ↓', className = '' }: ScrollCueProps) {
   return (
     <span
-      className={`mono animate-cue-bob select-none text-ink-muted ${className}`}
+      className={`label animate-cue-bob select-none ${className}`}
       aria-hidden="true"
     >
       {label}

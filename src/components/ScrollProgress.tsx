@@ -26,8 +26,8 @@ export default function ScrollProgress() {
     <div className="fixed inset-x-0 top-0 z-[70] h-[3px] bg-transparent" aria-hidden="true">
       <div
         ref={barRef}
-        className="h-full w-full origin-left scale-x-0 bg-gradient-to-r from-molten-peach via-molten-amber to-molten-ember"
-        style={{ boxShadow: '0 0 14px rgba(255,138,60,0.7)' }}
+        className="h-full w-full origin-left scale-x-0 bg-gradient-to-r from-accent via-accent-soft to-accent-blue"
+        style={{ boxShadow: '0 0 14px rgba(124,92,255,0.7)' }}
       />
     </div>
   );

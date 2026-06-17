@@ -59,7 +59,7 @@ export default function ProjectPanel({ project, layout }: ProjectPanelProps) {
         {/* ---- Text column ---- */}
         <div className={horizontal ? '' : 'order-2 lg:order-1'}>
           <Reveal stagger={0.08}>
-            <span className="mono text-molten-amber/80">{project.index} / SELECTED WORK</span>
+            <span className="mono text-molten-amber/80">{project.index} / PROJECTS</span>
             <h3 className="mt-3 font-display text-[clamp(40px,6vw,96px)] leading-[0.9] text-ink">
               {project.name}
             </h3>
