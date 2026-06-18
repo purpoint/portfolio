@@ -27,6 +27,11 @@ export function useLenis() {
     // Drive Lenis from GSAP's ticker so scroll + animation share one clock.
     lenis.on('scroll', ScrollTrigger.update);
 
+    // Dev-only handle for automated scroll-captures (stripped from prod build).
+    if (import.meta.env.DEV) {
+      (window as unknown as { __lenis?: unknown }).__lenis = lenis;
+    }
+
     const raf = (time: number) => {
       lenis.raf(time * 1000);
     };

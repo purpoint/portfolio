@@ -68,15 +68,15 @@ export const skills = {
   groups: [
     {
       label: 'LANGUAGES',
-      items: ['JavaScript (ES2022+)', 'TypeScript', 'Python', 'C++', 'C'],
+      items: ['JavaScript', 'TypeScript', 'Python', 'C++', 'C'],
     },
     {
       label: 'FRONTEND',
-      items: ['React.js', 'Next.js 14', 'Vite', 'Redux Toolkit', 'HTML5', 'CSS3', 'REST API integration'],
+      items: ['React.js', 'Next.js 14', 'Vite', 'Redux Toolkit', 'Tailwind CSS', 'Framer Motion', 'HTML5', 'CSS3'],
     },
     {
       label: 'BACKEND',
-      items: ['Node.js', 'Express.js', 'REST APIs', 'Socket.IO', 'WebSockets'],
+      items: ['Node.js', 'Express.js', 'FastAPI', 'REST APIs', 'Socket.IO', 'WebSockets'],
     },
     {
       label: 'DATABASES',
@@ -84,11 +84,11 @@ export const skills = {
     },
     {
       label: 'AI / ML',
-      items: ['RAG Pipelines', 'Groq LLM', 'HuggingFace Embeddings', 'Tesseract.js OCR', 'LLM Integration'],
+      items: ['RAG Pipelines', 'Groq LLM', 'Gemini', 'HuggingFace Embeddings', 'Tesseract.js OCR', 'OpenCV'],
     },
     {
       label: 'DEVOPS & TOOLS',
-      items: ['AWS', 'Docker', 'Git', 'GitHub Actions', 'Vercel', 'Render', 'Prometheus', 'Grafana', 'JWT', 'bcrypt'],
+      items: ['AWS (S3)', 'Git', 'GitHub Actions', 'Vercel', 'Render', 'Prometheus', 'JWT'],
     },
   ],
 };

@@ -24,10 +24,10 @@ export default function Marquee({ items, className = '' }: MarqueeProps) {
         {[...items, ...items].map((item, i) => (
           <span
             key={`${item}-${i}`}
-            className="font-display text-[clamp(28px,5vw,64px)] uppercase leading-none text-ink/[0.06]"
+            className="font-display text-[clamp(28px,5vw,64px)] uppercase leading-none text-ink/[0.07]"
           >
             {item}
-            <span className="px-6 text-molten-ember/20">/</span>
+            <span className="px-6 text-accent/30">/</span>
           </span>
         ))}
       </div>
