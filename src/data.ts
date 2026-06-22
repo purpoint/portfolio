@@ -64,7 +64,7 @@ export const education = {
 };
 
 export const skills = {
-  eyebrow: '03 — STACK',
+  eyebrow: '03 — SKILLS',
   groups: [
     {
       label: 'LANGUAGES',

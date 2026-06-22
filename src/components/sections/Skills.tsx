@@ -5,23 +5,11 @@ import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 const N = skills.groups.length;
 
-// Each category enters from a different offset (in addition to flying in from
-// depth) so it feels like travelling to a new place each time.
-const ENTER = [
-  { xPercent: 0, yPercent: 40 },
-  { xPercent: 60, yPercent: 0 },
-  { xPercent: 0, yPercent: -40 },
-  { xPercent: -60, yPercent: 0 },
-  { xPercent: 0, yPercent: 0 },
-  { xPercent: 0, yPercent: 35 },
-];
-
 export default function Skills() {
   const reduced = useReducedMotion();
   const [pinned, setPinned] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Pinned sequence only on large screens with motion enabled.
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)');
     const update = () => setPinned(mq.matches && !reduced);
@@ -33,71 +21,43 @@ export default function Skills() {
   useLayoutEffect(() => {
     if (!pinned || !sectionRef.current) return;
     const ctx = gsap.context(() => {
-      const panels = gsap.utils.toArray<HTMLElement>('.sk-panel');
-      const rail = gsap.utils.toArray<HTMLElement>('.sk-rail-item');
-      const fill = sectionRef.current!.querySelector<HTMLElement>('.sk-progress');
+      const cards = gsap.utils.toArray<HTMLElement>('.sk-card-wrap');
+      const dots = gsap.utils.toArray<HTMLElement>('.sk-dot');
 
-      // Start every panel pushed far back into space, invisible.
-      panels.forEach((p, i) => {
-        gsap.set(p, {
-          autoAlpha: 0,
-          scale: 0.55,
-          z: -600,
-          filter: 'blur(14px)',
-          xPercent: ENTER[i].xPercent,
-          yPercent: ENTER[i].yPercent,
+      const SPREAD = 360; // px between adjacent cards
+      const place = (active: number) => {
+        cards.forEach((card, i) => {
+          const d = i - active;
+          const ad = Math.abs(d);
+          const x = d * SPREAD;
+          const z = -ad * 240;
+          const ry = gsap.utils.clamp(-48, 48, -d * 38);
+          const scale = Math.max(0.6, 1 - ad * 0.16);
+          const opacity = ad > 2.6 ? 0 : Math.max(0.18, 1 - ad * 0.34);
+          card.style.transform = `translate(-50%, -50%) translateX(${x}px) translateZ(${z}px) rotateY(${ry}deg) scale(${scale})`;
+          card.style.opacity = String(opacity);
+          card.style.zIndex = String(100 - Math.round(ad * 10));
+          card.style.filter = ad > 1.15 ? `blur(${Math.min(7, (ad - 1) * 5)}px)` : 'none';
+          card.classList.toggle('sk-active', ad < 0.55);
         });
-      });
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: () => '+=' + window.innerHeight * N,
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const idx = Math.min(N - 1, Math.floor(self.progress * N));
-            rail.forEach((el, k) => {
-              el.style.opacity = k === idx ? '1' : '0.3';
-              el.classList.toggle('text-accent-soft', k === idx);
-            });
-            if (fill) fill.style.transform = `scaleY(${self.progress})`;
-          },
-        },
-      });
-
-      panels.forEach((panel, i) => {
-        // Fly the whole card (name + chips) in from depth to focus.
-        tl.to(panel, {
-          autoAlpha: 1,
-          scale: 1,
-          z: 0,
-          xPercent: 0,
-          yPercent: 0,
-          filter: 'blur(0px)',
-          duration: 1,
-          ease: 'power2.out',
+        const idx = Math.round(active);
+        dots.forEach((dot, k) => {
+          const on = k === idx;
+          dot.style.width = on ? '22px' : '6px';
+          dot.style.background = on ? 'linear-gradient(90deg,#7c5cff,#5b8def)' : 'rgba(255,255,255,0.25)';
         });
-        // Chips settle in just behind the card, riding the same motion.
-        tl.from(
-          panel.querySelectorAll('.sk-chip'),
-          { y: 22, opacity: 0, stagger: 0.035, duration: 0.45, ease: 'power2.out', immediateRender: false },
-          '<0.2'
-        );
-        tl.to(panel, { duration: 0.9 }); // dwell — hold the category in focus
-        // Drift past the viewer (except the last, which holds before release).
-        if (i < N - 1) {
-          tl.to(panel, {
-            autoAlpha: 0,
-            scale: 1.5,
-            z: 500,
-            filter: 'blur(14px)',
-            duration: 1,
-            ease: 'power2.in',
-          });
-        }
+      };
+
+      place(0);
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top top',
+        end: () => '+=' + window.innerHeight * (N - 1) * 1.05,
+        pin: true,
+        scrub: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => place(self.progress * (N - 1)),
       });
     }, sectionRef);
 
@@ -105,7 +65,45 @@ export default function Skills() {
     return () => ctx.revert();
   }, [pinned]);
 
-  // ---- Pinned cinematic sequence (desktop) ----
+  const Card = ({ g, i }: { g: (typeof skills.groups)[number]; i: number }) => (
+    <div
+      className="sk-poster relative flex h-[clamp(430px,60vh,545px)] flex-col overflow-hidden rounded-[26px] border p-7"
+      style={{
+        background: 'linear-gradient(160deg, rgba(34,30,52,0.92), rgba(14,13,20,0.95))',
+        borderColor: 'rgba(255,255,255,0.12)',
+        boxShadow: '0 40px 90px -40px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.1)',
+      }}
+    >
+      {/* moving sheen (active card only) */}
+      <span className="sk-shine" aria-hidden="true" />
+      {/* faint accent glow inside */}
+      <span
+        className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-60 blur-3xl"
+        style={{ background: 'radial-gradient(circle, rgba(124,92,255,0.5), transparent 70%)' }}
+        aria-hidden="true"
+      />
+      <div className="relative flex items-center justify-between">
+        <span className="font-mono text-xs text-accent-soft">
+          0{i + 1} <span className="text-ink-faint">/ 0{N}</span>
+        </span>
+        <span className="h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_2px_rgba(124,92,255,0.7)]" />
+      </div>
+      <h3 className="sk-name relative mt-5 font-display text-[clamp(26px,2.4vw,38px)] font-semibold leading-[1.02] text-ink">
+        {g.label}
+      </h3>
+      <div className="relative my-5 h-px w-full bg-white/10" />
+      <ul className="relative flex flex-col gap-2.5">
+        {g.items.map((item) => (
+          <li key={item} className="flex items-center gap-3 text-[15px] text-ink/85">
+            <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent/70" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+
+  // ---- Coverflow slider (desktop) ----
   if (pinned) {
     return (
       <section id="skills" ref={sectionRef} className="relative h-screen overflow-hidden">
@@ -116,56 +114,30 @@ export default function Skills() {
           aria-hidden="true"
         />
 
-        <p className="eyebrow absolute left-6 top-10 z-20 sm:left-10 lg:left-16">{skills.eyebrow}</p>
-
-        {/* Left progress rail */}
-        <div className="absolute left-6 top-1/2 z-20 hidden -translate-y-1/2 lg:left-16 lg:flex lg:items-stretch lg:gap-4">
-          <div className="relative w-px self-stretch bg-white/10">
-            <div className="sk-progress absolute inset-x-0 top-0 h-full origin-top scale-y-0 bg-accent-grad" />
+        <div className="absolute inset-x-0 top-10 z-20 px-5 sm:px-8 lg:px-10">
+          <div className="container-rail">
+            <p className="eyebrow">{skills.eyebrow}</p>
           </div>
-          <ul className="flex flex-col justify-center gap-3.5">
-            {skills.groups.map((g, i) => (
-              <li
-                key={g.label}
-                className="sk-rail-item font-mono text-xs uppercase tracking-label text-ink transition-opacity"
-                style={{ opacity: i === 0 ? 1 : 0.3 }}
-              >
-                <span className="mr-2 opacity-60">0{i + 1}</span>
-                {g.label}
-              </li>
-            ))}
-          </ul>
         </div>
 
-        {/* Stacked panels in 3D space */}
-        <div className="relative h-full [perspective:1200px]">
-          {skills.groups.map((g, i) => (
-            <div key={g.label} className="sk-panel absolute inset-0 flex items-center [transform-style:preserve-3d]">
-              {/* Ghost watermark bleeds off the right edge, clear of the rail */}
-              <span
-                className="pointer-events-none absolute right-[-4%] top-1/2 -translate-y-1/2 select-none font-display text-[17vw] font-bold uppercase leading-none text-white/[0.035]"
-                aria-hidden="true"
+        {/* Coverflow stage */}
+        <div className="relative h-full [perspective:1600px]">
+          <div className="absolute left-1/2 top-1/2 h-0 w-0 [transform-style:preserve-3d]">
+            {skills.groups.map((g, i) => (
+              <div
+                key={g.label}
+                className="sk-card-wrap absolute left-0 top-0 w-[clamp(300px,30vw,400px)]"
               >
-                {g.label.split(' ')[0]}
-              </span>
-              <div className="relative grid w-full items-center gap-8 px-6 lg:grid-cols-[1fr_1fr] lg:gap-12 lg:pl-[320px] lg:pr-20">
-                <div>
-                  <span className="font-mono text-sm text-accent-soft">
-                    0{i + 1} <span className="text-ink-faint">/ 0{N}</span>
-                  </span>
-                  <h3 className="mt-3 font-display text-[clamp(34px,5vw,72px)] font-semibold leading-[0.95] text-ink">
-                    {g.label}
-                  </h3>
-                </div>
-                <div className="flex flex-wrap gap-2.5">
-                  {g.items.map((item) => (
-                    <span key={item} className="sk-chip chip text-sm">
-                      {item}
-                    </span>
-                  ))}
-                </div>
+                <Card g={g} i={i} />
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Pagination dots */}
+        <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-2.5">
+          {skills.groups.map((g) => (
+            <span key={g.label} className="sk-dot h-1.5 w-1.5 rounded-full bg-white/25 transition-all" />
           ))}
         </div>
       </section>
@@ -178,26 +150,9 @@ export default function Skills() {
       <div className="grid-bg opacity-40" aria-hidden="true" />
       <div className="container-rail relative">
         <p className="eyebrow mb-10">{skills.eyebrow}</p>
-        <div className="flex flex-col gap-4">
+        <div className="grid gap-4 sm:grid-cols-2">
           {skills.groups.map((g, i) => (
-            <div key={g.label} className="glass-card rounded-2xl p-6">
-              <div className="mb-4 flex items-center gap-3">
-                <span
-                  className="grid h-8 w-8 place-items-center rounded-lg font-mono text-xs font-semibold text-white"
-                  style={{ backgroundImage: 'linear-gradient(135deg, #7c5cff, #5b8def)' }}
-                >
-                  0{i + 1}
-                </span>
-                <h3 className="font-display text-base font-semibold text-ink">{g.label}</h3>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {g.items.map((item) => (
-                  <span key={item} className="chip text-[13px]">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <Card key={g.label} g={g} i={i} />
           ))}
         </div>
       </div>
