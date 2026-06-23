@@ -24,6 +24,70 @@ export default function Skills() {
       const cards = gsap.utils.toArray<HTMLElement>('.sk-card-wrap');
       const dots = gsap.utils.toArray<HTMLElement>('.sk-dot');
 
+      // ──── Section-entry choreography ────
+      // Reversible reveal as you scroll out of Education into Skills:
+      //   1. Eyebrow + dots fade in
+      //   2. Violet pulse sweeps in behind the stage
+      //   3. First card flies up + zooms from far below into focus
+      gsap.from('.sk-eyebrow-wrap', {
+        opacity: 0,
+        y: -22,
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+          end: 'top 30%',
+          toggleActions: 'play none none reverse',
+        },
+      });
+      gsap.from('.sk-dots', {
+        opacity: 0,
+        y: 22,
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+          end: 'top 30%',
+          toggleActions: 'play none none reverse',
+        },
+      });
+      gsap.fromTo(
+        '.sk-pulse',
+        { opacity: 0, scale: 0.4 },
+        {
+          opacity: 1,
+          scale: 1.1,
+          duration: 1.4,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 85%',
+            end: 'top 20%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+      gsap.fromTo(
+        '.sk-stage',
+        { yPercent: 35, scale: 0.7, opacity: 0, rotateX: 22 },
+        {
+          yPercent: 0,
+          scale: 1,
+          opacity: 1,
+          rotateX: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            end: 'top 18%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+
       const SPREAD = 360; // px between adjacent cards
       const place = (active: number) => {
         cards.forEach((card, i) => {
@@ -114,14 +178,21 @@ export default function Skills() {
           aria-hidden="true"
         />
 
-        <div className="absolute inset-x-0 top-10 z-20 px-5 sm:px-8 lg:px-10">
+        <div className="sk-eyebrow-wrap absolute inset-x-0 top-10 z-20 px-5 sm:px-8 lg:px-10">
           <div className="container-rail">
             <p className="eyebrow">{skills.eyebrow}</p>
           </div>
         </div>
 
+        {/* Violet light pulse — sweeps in behind the stage on section entry */}
+        <span
+          className="sk-pulse pointer-events-none absolute left-1/2 top-1/2 h-[60vmin] w-[60vmin] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 blur-[120px]"
+          style={{ background: 'radial-gradient(circle, rgba(124,92,255,0.7), rgba(91,141,239,0.18) 50%, transparent 72%)' }}
+          aria-hidden="true"
+        />
+
         {/* Coverflow stage */}
-        <div className="relative h-full [perspective:1600px]">
+        <div className="sk-stage relative h-full [perspective:1600px]">
           <div className="absolute left-1/2 top-1/2 h-0 w-0 [transform-style:preserve-3d]">
             {skills.groups.map((g, i) => (
               <div
@@ -135,7 +206,7 @@ export default function Skills() {
         </div>
 
         {/* Pagination dots */}
-        <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-2.5">
+        <div className="sk-dots absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-2.5">
           {skills.groups.map((g) => (
             <span key={g.label} className="sk-dot h-1.5 w-1.5 rounded-full bg-white/25 transition-all" />
           ))}
