@@ -93,13 +93,26 @@ export const skills = {
   ],
 };
 
+export interface ProjectAccent {
+  /** "r,g,b" — primary accent for buttons, badges, stats, glow */
+  primary: string;
+  /** "r,g,b" — secondary accent for gradients/secondary glow */
+  secondary: string;
+  /** CSS color string for chip dots and highlights */
+  dot: string;
+  /** Short label e.g. "Real-time" shown in the status pill */
+  tag: string;
+}
+
 export interface Project {
   id: string;
   index: string;
   name: string;
   tagline: string;
-  /** Tailwind-friendly RGB triplet for the per-panel heat glow. */
-  glow: string;
+  /** Per-project accent colors — each project has its own identity. */
+  accent: ProjectAccent;
+  /** Device mockup type: 'laptop' for web apps, 'phone' for mobile/voice-first. */
+  device: 'laptop' | 'phone';
   /** Screenshot path under /public. Drop your real screenshots here. */
   image: string;
   stack: string[];
@@ -118,7 +131,13 @@ export const work = {
       index: '01',
       name: 'CollabBoard',
       tagline: 'Real-time collaborative whiteboard',
-      glow: '255, 138, 60',
+      accent: {
+        primary: '124, 92, 255',
+        secondary: '91, 141, 239',
+        dot: '#9d86ff',
+        tag: 'Real-time',
+      },
+      device: 'laptop',
       image: '/projects/collabboard.png',
       stack: ['React', 'Node.js', 'Express', 'Socket.IO', 'MongoDB', 'Redux Toolkit', 'JWT', 'Vercel', 'Render'],
       bullets: [
@@ -140,7 +159,13 @@ export const work = {
       index: '02',
       name: 'WasteIQ',
       tagline: 'AI-powered restaurant waste-management SaaS',
-      glow: '255, 91, 46',
+      accent: {
+        primary: '255, 159, 39',
+        secondary: '255, 90, 60',
+        dot: '#ffa84a',
+        tag: 'AI SaaS',
+      },
+      device: 'laptop',
       image: '/projects/wasteiq.png',
       stack: ['Next.js 14', 'TypeScript', 'Node.js', 'Express', 'PostgreSQL', 'Prisma', 'Groq AI', 'Vercel', 'Render'],
       bullets: [
@@ -162,7 +187,13 @@ export const work = {
       index: '03',
       name: 'MindVault',
       tagline: 'AI personal knowledge system (RAG)',
-      glow: '255, 217, 168',
+      accent: {
+        primary: '38, 213, 178',
+        secondary: '79, 182, 255',
+        dot: '#5ee0c0',
+        tag: 'RAG · Vector search',
+      },
+      device: 'laptop',
       image: '/projects/mindvault.png',
       stack: ['React', 'Vite', 'Node.js', 'MongoDB Atlas', 'Pinecone', 'HuggingFace', 'Groq LLM (Llama 3.1 8B)', 'Tesseract.js', 'JWT'],
       bullets: [
@@ -184,7 +215,13 @@ export const work = {
       index: '04',
       name: 'EchoVision AI',
       tagline: 'Voice-first accessibility assistant',
-      glow: '200, 52, 27',
+      accent: {
+        primary: '255, 95, 169',
+        secondary: '212, 83, 255',
+        dot: '#ff7ad9',
+        tag: 'Accessibility',
+      },
+      device: 'phone',
       image: '/projects/echovision.png',
       stack: ['React', 'Python', 'FastAPI', 'OpenCV', 'Gemini', 'Groq', 'Tesseract.js', 'PDF.js', 'Web Speech'],
       bullets: [
