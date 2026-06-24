@@ -220,6 +220,56 @@
   .sk-active .sk-shine { animation: none; }
 }
 
+/* ── Contact action cards: identical by default, "primary" on hover ── */
+.ct-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 20px 50px -28px rgba(0, 0, 0, 0.8);
+  transition: transform 0.3s, background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.ct-card:hover {
+  transform: translateY(-4px);
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.22), rgba(91, 141, 239, 0.12));
+  border-color: rgba(124, 92, 255, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 24px 60px -28px rgba(124, 92, 255, 0.6);
+}
+.ct-card .ct-card-icon {
+  background-image: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: background-image 0.3s, border-color 0.3s;
+}
+.ct-card:hover .ct-card-icon {
+  background-image: linear-gradient(135deg, #7c5cff, #5b8def);
+  border-color: transparent;
+}
+.ct-card .ct-card-arrow {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: background 0.3s, border-color 0.3s, transform 0.3s;
+}
+.ct-card:hover .ct-card-arrow {
+  background: linear-gradient(135deg, #7c5cff, #5b8def);
+  border-color: transparent;
+  transform: translateX(4px);
+}
+.ct-card .ct-card-brand {
+  transition: color 0.3s;
+}
+.ct-card:hover .ct-card-brand {
+  color: #9d86ff;
+}
+
 /* Faint blueprint grid, fading out toward the edges. */
 .grid-bg {
   position: absolute;
